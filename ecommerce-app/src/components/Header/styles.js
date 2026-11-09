@@ -1,16 +1,13 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const HeaderWrapper = styled.header`
-  background: ${({ theme }) => theme.colors.primary};
-  color: white;
-  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.lg};
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: ${({ theme }) => theme.boxShadow};
+  background-color: ${({ theme }) => theme.colors.primary};
+  padding: 12px 24px;
+  color: white;
 `;
 
 const Logo = styled.img`
@@ -42,10 +39,49 @@ const CartCount = styled.span`
   font-size: 0.8rem;
   font-weight: bold;
 `;
+const RightSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+`;
+
+const UserGreeting = styled.span`
+  color: white;
+  font-size: 14px;
+`;
+
+const LogoutButton = styled.button`
+  background: white;
+  color: ${({ theme }) => theme.colors.primary};
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background: rgb(240,240,240)
+  }
+`;
+
+const LoginLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 export {
   HeaderWrapper,
   Logo,
   CartWrapper,
   CartCount,
-  MainText
+  MainText,
+  RightSection,
+  UserGreeting,
+  LogoutButton,
+  LoginLink,
 }

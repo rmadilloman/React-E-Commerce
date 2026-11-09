@@ -41,7 +41,7 @@ const Cart = () => {
           <ItemImage src={item.image} alt={item.name} />
           <ItemDetails>
             <ItemName>{item.name}</ItemName>
-            <ItemPrice>${item.price.toFixed(2)}</ItemPrice>
+            <ItemPrice>${Number(item.price).toFixed(2)}</ItemPrice>
             <ItemQuantity>Quantity: {item.quantity}</ItemQuantity>
           </ItemDetails>
           <RemoveButton onClick={() => dispatch(removeFromCart(item.id))}>

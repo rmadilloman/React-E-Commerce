@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { register } from '../../redux/slices/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../../redux/slices/authSlice';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   Container,
   Form,
   Input,
   Button,
-  SuccessMessage,
   LinkText,
 } from './styles';
 
@@ -15,15 +14,16 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [success, setSuccess] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { error, loading } = useSelector((state) => state.auth);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(register({ username, password }));  // Dispatch register
-    setSuccess(true);
-    setTimeout(() => navigate('/'), 2000);  // Redirect after success
+    const result = await dispatch(registerUser({ username, email, password }));
+    if (registerUser.fulfilled.match(result)) {
+      navigate('/');
+    }
   };
 
   return (
@@ -51,8 +51,14 @@ const Register = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <Button type="submit">Register</Button>
-        {success && <SuccessMessage>Account created! Redirecting to home...</SuccessMessage>}
+        <Button type="submit" disabled={loading}>
+          {loading ? 'Creating account...' : 'Register'}
+        </Button>
+        {error && (
+          <p style={{ color: 'red', marginTop: '10px' }}>
+          {typeof error === 'string' ? error : 'Registration failed'}
+        </p>
+)}
       </Form>
       <LinkText>
         Already have an account? <Link to="/login">Login</Link>

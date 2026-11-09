@@ -14,7 +14,7 @@ const ProductCard = ({ product }) => {
     <Card>
       <Image src={product.image} alt={product.name} />
       <Name>{product.name}</Name>
-      <Price>${product.price.toFixed(2)}</Price>
+      <Price>${Number(product.price).toFixed(2)}</Price>
       <AddButton onClick={handleAdd}>Add to Cart</AddButton>
     </Card>
   );

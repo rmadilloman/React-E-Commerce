@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from '../../redux/slices/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../redux/slices/authSlice';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   LoginText,
@@ -15,17 +15,15 @@ import {
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { error, loading } = useSelector((state) => state.auth);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (username === 'user' && password === 'admin') { // current login credentials
-      dispatch(login({ username, password }));
-      navigate('/');  // Redirect to home on success
-    } else {
-      setError('Invalid username or password');
+    const result = await dispatch(loginUser({ username, password }));
+    if (loginUser.fulfilled.match(result)) {
+      navigate('/');
     }
   };
 
@@ -35,20 +33,26 @@ const Login = () => {
       <Form onSubmit={handleSubmit}>
         <Input
           type="text"
-          placeholder="Username (user)"
+          placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
         />
         <Input
           type="password"
-          placeholder="Password (admin)"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <Button type="submit">Login</Button>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
+        <Button type="submit" disabled={loading}>
+          {loading ? 'Logging in....' : 'Login'}
+        </Button>
+        {error && (
+          <ErrorMessage>
+            {typeof error === 'string' ? error : 'Invalid username or password'}
+          </ErrorMessage>
+        )}
       </Form>
       <LinkText>
         Don't have an account? <Link to="/register">Register here</Link>
