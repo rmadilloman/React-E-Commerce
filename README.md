@@ -52,4 +52,9 @@ Utilizes React and Redux Toolkit to handle states and cart organization, connect
   4. Start the server
      ```bash
      python manage.py runserver
+
+
+### View
+<img width="1889" height="564" alt="image" src="https://github.com/user-attachments/assets/2dc2f942-36bc-4feb-8d6d-6814f6b02c79" />
+
      
